@@ -26,6 +26,18 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Target directory handling (defaults to current directory if not specified)
+TARGET_DIR="${1:-.}"
+
+if [ ! -d "$TARGET_DIR" ]; then
+    log_error "Directory '$TARGET_DIR' does not exist."
+    exit 1
+fi
+
+# Change to the target directory
+cd "$TARGET_DIR"
+log_info "Working directory set to: $(pwd)"
+
 # Verify we are in a git repository
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     log_error "This script must be run inside a Git repository."
@@ -34,7 +46,7 @@ fi
 
 # Ensure pom.xml exists in the current directory
 if [ ! -f "pom.xml" ]; then
-    log_error "pom.xml not found in the current directory."
+    log_error "pom.xml not found in the target directory: $(pwd)"
     exit 1
 fi
 
