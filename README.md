@@ -1,5 +1,73 @@
 # GitScripts
 
+A set of scripts for Git workflow automation and integration with IDEs such as WebStorm, PhpStorm, and IntelliJ IDEA.
+
+*Read this in other languages: [Русский](#gitscripts-ru)*
+
+## Project Structure
+
+1. **`git-flow.sh`** — an interactive Bash script that automates the release process:
+   - Updates the `dev` branch.
+   - Interactively increments the project version in `pom.xml` (options include patch, minor, major, or manual input) and commits the change.
+   - Updates the local `master` branch from `origin/master`.
+   - Merges `master` into `dev`.
+   - Pushes `dev` to `origin`.
+   - Switches to `master` and merges `dev` into it.
+   - Pushes `master` to `origin`.
+   
+2. **`setup-run-config.sh`** — a helper script to quickly set up a Run Configuration in your IDE:
+   - Creates a run configuration named **"Assembly on preprod"** in the specified target project.
+   - Allows running `git-flow.sh` directly from the IDE interface (e.g., WebStorm).
+
+---
+
+## Requirements
+
+- **OS**: macOS / Linux.
+- **Interpreters**: `bash`, `python3` (used by `git-flow.sh` for parsing and interactively modifying `pom.xml`).
+- **Version File**: The target project's root directory must contain a `pom.xml` file with a `<projectVersion>X.Y.Z</projectVersion>` tag.
+
+---
+
+## Usage
+
+### 1. Setting Up Run Configuration in IDE
+
+You can automatically add the run configuration to your workspace using the `setup-run-config.sh` script:
+
+```bash
+./setup-run-config.sh /path/to/your/target/project
+```
+
+Once executed, an `assembly_on_preprod.xml` file will be created in `.idea/runConfigurations/` of the target project. The IDE will automatically detect the new run configuration named **"Assembly on preprod"**, which runs `git-flow.sh` in the context of your project.
+
+### 2. Running the Script Directly from Terminal
+
+The `git-flow.sh` script accepts an optional path to the target project directory (defaults to the current directory):
+
+```bash
+./git-flow.sh /path/to/your/target/project
+```
+
+Upon execution, the script prompts you to choose the version increment type:
+```text
+Current project version in pom.xml: 1.0.0
+
+Select version increment option:
+  1) Bump patch   (-> 1.0.1)
+  2) Bump minor   (-> 1.1.0)
+  3) Bump major   (-> 2.0.0)
+  4) Enter manually
+
+Select option (1-4):
+```
+
+After selecting or entering the new version, the script automatically performs merges and pushes the changes to the remote repository.
+
+---
+
+# GitScripts (RU)
+
 Набор скриптов для автоматизации Git-workflow и интеграции с IDE WebStorm / PhpStorm / IntelliJ IDEA.
 
 ## Состав проекта
