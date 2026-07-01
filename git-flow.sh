@@ -133,7 +133,7 @@ except Exception as e:
 
 try:
     with open(temp_path, 'w', encoding='utf-8') as f:
-        f.write(f'{current_version}\n{new_version}')
+        f.write(f'{current_version}\n{new_version}\n')
 except Exception as e:
     print(f'Ошибка при записи во временный файл: {str(e)}')
     sys.exit(1)
